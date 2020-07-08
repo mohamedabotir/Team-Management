@@ -118,10 +118,14 @@ Statement st=null;
            while(rs.next()){
                String name=rs.getString("name");
                String password=rs.getString("password");
+               int type=rs.getInt("type");
                
                    System.out.println(Name());
-                   JOptionPane.showMessageDialog(this,"Succesfull Done");
-                  dispose();
+                   if(type==1){
+                   JOptionPane.showMessageDialog(this,"Succesfull Done:Programmer");
+                  dispose();}if(type==2){
+                   JOptionPane.showMessageDialog(this,"Succesfull Done:Tester");
+                  dispose();}
                
            }
         } catch (SQLException ex) {

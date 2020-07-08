@@ -5,9 +5,22 @@
  */
 package teammanagement;
 
+import database.connection;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 /**
@@ -22,7 +35,7 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
         
-         jButton1.setBackground(new Color(21,25,25));
+         jButton1.setBackground(new Color(255, 255, 255));
          Footer.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent me) {
@@ -39,12 +52,14 @@ public class MainFrame extends javax.swing.JFrame {
             @Override
             public void mouseEntered(MouseEvent me) {
                 Footer.setBackground(new Color(51, 51, 0));
+                Copy.setForeground(new Color(255, 255, 255));
             }
 
             @Override
             public void mouseExited(MouseEvent me) {
                 
                 Footer.setBackground(new Color(127, 127, 127));
+                Copy.setForeground(Color.black);
             }
         });
          
@@ -63,19 +78,59 @@ public class MainFrame extends javax.swing.JFrame {
 
             @Override
             public void mouseEntered(MouseEvent me) {
-                jButton1.setBackground(new Color(214, 217, 223));
+                jButton1.setBackground(new Color(129, 152, 48));
                
                
             }
 
             @Override
             public void mouseExited(MouseEvent me) {
-                jButton1.setBackground(new Color(21,25,25));
+               // jButton1.setBackground(new Color(21,25,25));
+               jButton1.setBackground(new Color(255, 255, 255));
                 
             }
         });
+        jButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+               if(ae.getSource()==jButton1)
+                try {
+                    login();
+               } catch (SQLException ex) {
+                   Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+               }
+            }
+        });
     }
-
+void login() throws SQLException
+{
+    String nam=TName.getText() ;
+    String pass=String.valueOf(TPassword.getPassword());
+Statement st=null;
+    Connection co=null;
+    ResultSet rs=null;
+    connection con=new connection();
+        try {
+            co= con.getConnection();
+            st=co.createStatement();
+            rs=st.executeQuery("select * from user where name='"+nam+"' and password='"+pass+"'");
+            
+           while(rs.next()){
+               String name=rs.getString("name");
+               String password=rs.getString("password");
+               
+                   System.out.println(Name());
+                   JOptionPane.showMessageDialog(this,"Succesfull Done");
+                  dispose();
+               
+           }
+        } catch (SQLException ex) {
+            Logger.getLogger(GetLogin.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            co.close();
+        st.close();
+        }
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -268,6 +323,14 @@ public class MainFrame extends javax.swing.JFrame {
                 new MainFrame().setVisible(true);
             }
         });
+    }
+
+    public  String Name() {
+        return TName.getText();
+    }
+
+    public char[] Password() {
+        return TPassword.getPassword();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -8,4 +8,4 @@
  * Created: Jul 4, 2020
  */
 
-create table user (id int(4) unsigned auto_increment primary key,name varchar(30) not null, password varchar(20) not null,index(id);
+create table user (id int(4) unsigned auto_increment primary key,name varchar(30) not null, password varchar(20) not null,type int(1) not null,index(id);

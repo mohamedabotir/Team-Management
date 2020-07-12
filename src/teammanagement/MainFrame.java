@@ -125,7 +125,10 @@ Statement st=null;
                    JOptionPane.showMessageDialog(this,"Succesfull Done:Programmer");
                   dispose();}if(type==2){
                    JOptionPane.showMessageDialog(this,"Succesfull Done:Tester");
-                  dispose();}
+                  dispose();OverallOperation NextFrame=new OverallOperation();NextFrame.setVisible(true);
+                  
+                  }
+                  
                
            }
         } catch (SQLException ex) {

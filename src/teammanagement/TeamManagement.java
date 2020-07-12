@@ -5,6 +5,12 @@
  */
 package teammanagement;
 
+import java.awt.AWTException;
+import java.awt.Image;
+import java.awt.SystemTray;
+import java.awt.Toolkit;
+import java.awt.TrayIcon;
+
 /**
  *
  * @author Threats
@@ -14,9 +20,14 @@ public class TeamManagement {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws AWTException {
      MainFrame s=new MainFrame();
      s.setVisible(true);
+      
+        
+
+   
+    }
     }
     
-}
+

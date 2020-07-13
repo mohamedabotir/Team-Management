@@ -6,6 +6,7 @@
 package teammanagement;
 
 import java.io.File;
+import javafx.stage.FileChooser;
 import javax.swing.JFileChooser;
 
 /**
@@ -35,22 +36,35 @@ public class OverallOperation extends javax.swing.JFrame {
     private void initComponents() {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
+        status = new javax.swing.JPanel();
         Submission = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         Notes = new javax.swing.JTextArea();
         Submit = new javax.swing.JButton();
         Directory = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        upload = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
-        jButton2.setText("Upload");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
+        jTabbedPane1.setBackground(new java.awt.Color(125, 147, 46));
+
+        javax.swing.GroupLayout statusLayout = new javax.swing.GroupLayout(status);
+        status.setLayout(statusLayout);
+        statusLayout.setHorizontalGroup(
+            statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 537, Short.MAX_VALUE)
+        );
+        statusLayout.setVerticalGroup(
+            statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 328, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Status", status);
+
+        Submission.setBackground(new java.awt.Color(125, 147, 46));
 
         Notes.setColumns(20);
         Notes.setRows(5);
@@ -62,39 +76,56 @@ public class OverallOperation extends javax.swing.JFrame {
 
         jLabel1.setText("  Path:");
 
+        upload.setIcon(new javax.swing.ImageIcon("D:\\project\\upload3.PNG")); // NOI18N
+        upload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uploadActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Comment");
+
         javax.swing.GroupLayout SubmissionLayout = new javax.swing.GroupLayout(Submission);
         Submission.setLayout(SubmissionLayout);
         SubmissionLayout.setHorizontalGroup(
             SubmissionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(SubmissionLayout.createSequentialGroup()
-                .addComponent(jScrollPane2)
-                .addContainerGap())
-            .addGroup(SubmissionLayout.createSequentialGroup()
-                .addGap(0, 2, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Directory, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30))
-            .addGroup(SubmissionLayout.createSequentialGroup()
-                .addGap(182, 182, 182)
-                .addComponent(Submit, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(SubmissionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(SubmissionLayout.createSequentialGroup()
+                        .addGap(201, 201, 201)
+                        .addComponent(Submit, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(SubmissionLayout.createSequentialGroup()
+                        .addGap(218, 218, 218)
+                        .addGroup(SubmissionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(upload, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, SubmissionLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(SubmissionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 492, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(SubmissionLayout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(Directory, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(45, 45, 45))
         );
         SubmissionLayout.setVerticalGroup(
             SubmissionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(SubmissionLayout.createSequentialGroup()
-                .addGap(34, 34, 34)
+                .addGap(33, 33, 33)
                 .addGroup(SubmissionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Directory, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(34, 34, 34)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Directory, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(17, 17, 17)
+                .addComponent(upload, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(57, 57, 57)
+                .addGap(13, 13, 13)
                 .addComponent(Submit)
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Submission", Submission);
@@ -103,9 +134,7 @@ public class OverallOperation extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 499, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 499, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -115,13 +144,13 @@ public class OverallOperation extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void uploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadActionPerformed
         JFileChooser f=new JFileChooser();
         f.showOpenDialog(null);
         File file=f.getSelectedFile();
         filename=file.getAbsolutePath();
         Directory.setText(filename);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_uploadActionPerformed
 
     /**
      * @param args the command line arguments
@@ -163,9 +192,11 @@ public class OverallOperation extends javax.swing.JFrame {
     private javax.swing.JTextArea Notes;
     private javax.swing.JPanel Submission;
     private javax.swing.JButton Submit;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JPanel status;
+    private javax.swing.JButton upload;
     // End of variables declaration//GEN-END:variables
 }

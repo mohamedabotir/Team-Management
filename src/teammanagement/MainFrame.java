@@ -32,6 +32,7 @@ public class MainFrame extends javax.swing.JFrame {
     /**
      * Creates new form MainFrame
      */
+  static  int id;
     public MainFrame() {
         initComponents();
         
@@ -118,6 +119,7 @@ Statement st=null;
            while(rs.next()){
                String name=rs.getString("name");
                String password=rs.getString("password");
+               id=rs.getInt("id");
                int type=rs.getInt("type");
                
                    System.out.println(Name());
@@ -339,6 +341,9 @@ Statement st=null;
 
     public char[] Password() {
         return TPassword.getPassword();
+    }
+  public static  int getId(){
+    return id;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

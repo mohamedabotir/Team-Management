@@ -5,24 +5,44 @@
  */
 package teammanagement;
 
+import Annotation.DataOperations;
+import com.mysql.cj.protocol.Resultset;
+import database.connection;
 import java.io.File;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.stage.FileChooser;
 import javax.swing.JFileChooser;
+import static teammanagement.MainFrame.getId;
 
 /**
  *
  * @author Threats
  */
-public class OverallOperation extends javax.swing.JFrame {
+public class OverallOperation extends javax.swing.JFrame implements DataOperations{
 
     /**
      * Creates new form OverallOperation
      */
-    String filename;
+    String filepath;
     byte[] codefile;
+    String name;
+    Connection con=null;
+    Statement st=null;
+    Resultset rs=null;
+    String Query;
+    Date dtsub;
+    SimpleDateFormat formate;
+    connection co ;
     public OverallOperation() {
         initComponents();
-        filename=null;
+        filepath=null;
         codefile=null;
     }
 
@@ -36,7 +56,6 @@ public class OverallOperation extends javax.swing.JFrame {
     private void initComponents() {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        status = new javax.swing.JPanel();
         Submission = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         Notes = new javax.swing.JTextArea();
@@ -45,24 +64,12 @@ public class OverallOperation extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         upload = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        status = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
         jTabbedPane1.setBackground(new java.awt.Color(125, 147, 46));
-
-        javax.swing.GroupLayout statusLayout = new javax.swing.GroupLayout(status);
-        status.setLayout(statusLayout);
-        statusLayout.setHorizontalGroup(
-            statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 537, Short.MAX_VALUE)
-        );
-        statusLayout.setVerticalGroup(
-            statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 328, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("Status", status);
 
         Submission.setBackground(new java.awt.Color(125, 147, 46));
 
@@ -71,6 +78,11 @@ public class OverallOperation extends javax.swing.JFrame {
         jScrollPane2.setViewportView(Notes);
 
         Submit.setText("Submit");
+        Submit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SubmitActionPerformed(evt);
+            }
+        });
 
         Directory.setText("Directory");
 
@@ -130,11 +142,24 @@ public class OverallOperation extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Submission", Submission);
 
+        javax.swing.GroupLayout statusLayout = new javax.swing.GroupLayout(status);
+        status.setLayout(statusLayout);
+        statusLayout.setHorizontalGroup(
+            statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 537, Short.MAX_VALUE)
+        );
+        statusLayout.setVerticalGroup(
+            statusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 328, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Status", status);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 499, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 499, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -148,9 +173,24 @@ public class OverallOperation extends javax.swing.JFrame {
         JFileChooser f=new JFileChooser();
         f.showOpenDialog(null);
         File file=f.getSelectedFile();
-        filename=file.getAbsolutePath();
-        Directory.setText(filename);
+        filepath=file.getAbsolutePath();
+        Directory.setText(filepath);
+        name=file.getName();
+        StringTokenizer s=new StringTokenizer(name);
+        name=s.nextToken(".");
+        
+        
     }//GEN-LAST:event_uploadActionPerformed
+
+    private void SubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SubmitActionPerformed
+        System.out.println(name);
+         formate=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+         dtsub=new Date();
+        System.out.println(formate.format(dtsub));
+        System.out.println(getId());
+        System.out.println(Notes.getText());
+        Insert();
+    }//GEN-LAST:event_SubmitActionPerformed
 
     /**
      * @param args the command line arguments
@@ -199,4 +239,32 @@ public class OverallOperation extends javax.swing.JFrame {
     private javax.swing.JPanel status;
     private javax.swing.JButton upload;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void Insert() {
+        try {
+            Query="insert into programmer(userid,comment,submissiondate,filename,file)values('"+getId()+"','"+Notes.getText()+"','"+formate.format(dtsub)+"','"+name+"','"+filepath+"')";
+            co =new connection();
+            con=co.getConnection();
+            st=con.createStatement();
+            st.execute(Query);
+        } catch (SQLException ex) {
+            Logger.getLogger(OverallOperation.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public void Update() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void Delete() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void Search() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

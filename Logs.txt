@@ -1,3 +1,6 @@
 Logs Date 2020-07-19 01:11:53 ForFile config
 Logs Date 2020-07-19 01:12:36 ForFile 13147149
 Logs Date 2020-07-19 01:14:18 ForFile Brave
+Logs Date 2020-07-19 01:17:56 ForFile settings
+Logs Date 2020-07-19 01:18:39 ForFile Core Java Volume I- Fundamentals 9th Edition- Horstmann, Cay S
+Logs Date 2020-07-19 01:19:33 ForFile introduction to algorithm 2nd

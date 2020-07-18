@@ -6,6 +6,7 @@
 package teammanagement;
 
 import Annotation.DataOperations;
+import Logs.WriteLogs;
 import com.mysql.cj.protocol.Resultset;
 import database.connection;
 import java.io.File;
@@ -189,6 +190,8 @@ public class OverallOperation extends javax.swing.JFrame implements DataOperatio
         System.out.println(formate.format(dtsub));
         System.out.println(getId());
         System.out.println(Notes.getText());
+        WriteLogs Logs=new WriteLogs();
+        Logs.Write("Logs Date"+formate.format(dtsub).toString()+" ForFile "+name);
         Insert();
     }//GEN-LAST:event_SubmitActionPerformed
 

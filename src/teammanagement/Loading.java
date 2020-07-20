@@ -5,6 +5,7 @@
  */
 package teammanagement;
 
+import Threading.Task;
 import com.sun.javafx.applet.Splash;
 
 /**
@@ -16,20 +17,27 @@ public class Loading extends javax.swing.JFrame {
     /**
      * Creates new form Loading
      */
-    public Loading() {
+    public Loading(MainFrame ss) {
+        
        initComponents();
         setVisible(true);
+         ss=new MainFrame();
+         
         try{
             
         for(int i=0;i<100;i++)
         {
-        Thread.sleep(100);
+            Task s=new Task(this,ss);
+            s.Start();
+            if(ss.getFinish()==true)
+                s.Stop();
+       Thread.sleep(100);
         this.ProgressLabel.setText(Integer.toString(i)+"%");
         this.jProgressBar1.setValue(i);
         if(i==99)
         {
             dispose();
-         MainFrame ss=new MainFrame();
+         
      ss.setVisible(true);
         }
         }

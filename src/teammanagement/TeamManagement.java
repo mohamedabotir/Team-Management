@@ -22,7 +22,8 @@ public class TeamManagement {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws AWTException {
-     Loading s=new Loading();
+     MainFrame ss=new MainFrame();
+        Loading s=new Loading(ss);
     
      
      

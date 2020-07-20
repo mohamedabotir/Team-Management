@@ -15,6 +15,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -33,6 +34,13 @@ public class MainFrame extends javax.swing.JFrame {
      * Creates new form MainFrame
      */
   static  int id;
+  Statement st=null;
+    Connection co=null;
+    ResultSet rs=null;
+    connection con;
+    boolean Finish=false;
+    LinkedList <String> LinkPassword=new LinkedList<>();
+    LinkedList <String> LinkName=new LinkedList<>();
     public MainFrame() {
         initComponents();
         
@@ -105,17 +113,12 @@ public class MainFrame extends javax.swing.JFrame {
     }
 void login() throws SQLException
 {
-    String nam=TName.getText() ;
-    String pass=String.valueOf(TPassword.getPassword());
-Statement st=null;
-    Connection co=null;
-    ResultSet rs=null;
-    connection con=new connection();
+    
+  
         try {
-            co= con.getConnection();
-            st=co.createStatement();
-            rs=st.executeQuery("select * from user where name='"+nam+"' and password='"+pass+"'");
-            
+           
+            fetch();
+           
            while(rs.next()){
                String name=rs.getString("name");
                String password=rs.getString("password");
@@ -123,11 +126,12 @@ Statement st=null;
                int type=rs.getInt("type");
                
                    System.out.println(Name());
-                   if(type==1){
+                   if(type==2){
                    JOptionPane.showMessageDialog(this,"Succesfull Done:Programmer");
-                  dispose();}if(type==2){
+                   OverallOperation NextFrame=new OverallOperation();NextFrame.setVisible(true);
+                  dispose();}if(type==1){
                    JOptionPane.showMessageDialog(this,"Succesfull Done:Tester");
-                  dispose();OverallOperation NextFrame=new OverallOperation();NextFrame.setVisible(true);
+                  dispose();
                   
                   }
                   
@@ -345,6 +349,27 @@ Statement st=null;
   public static  int getId(){
     return id;
     }
+ public void fetch(){
+       String nam=TName.getText() ;
+    String pass=String.valueOf(TPassword.getPassword());
+con=new connection();
+        
+      try {
+          co= con.getConnection();
+          st=co.createStatement();
+            rs=st.executeQuery("select * from user where name='"+nam+"' and password='"+pass+"'");
+            setRS(rs);
+      } catch (SQLException ex) {
+          Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+      }
+      Finish=true;
+  }
+  public boolean getFinish(){
+  return Finish;
+  }
+  void setRS(ResultSet rs){
+  this.rs=rs;
+  }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Copy;

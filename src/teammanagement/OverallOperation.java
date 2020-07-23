@@ -7,10 +7,10 @@ package teammanagement;
 
 import Annotation.DataOperations;
 import Logs.WriteLogs;
-import com.mysql.cj.protocol.Resultset;
 import database.connection;
 import java.io.File;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
@@ -36,7 +36,7 @@ public class OverallOperation extends javax.swing.JFrame implements DataOperatio
     String name;
     Connection con=null;
     Statement st=null;
-    Resultset rs=null;
+    ResultSet rs=null;
     String Query;
     Date dtsub;
     SimpleDateFormat formate;
@@ -89,7 +89,7 @@ public class OverallOperation extends javax.swing.JFrame implements DataOperatio
 
         jLabel1.setText("  Path:");
 
-        upload.setIcon(new javax.swing.ImageIcon("D:\\project\\upload3.PNG")); // NOI18N
+        upload.setIcon(new javax.swing.ImageIcon("E:\\project\\upload3.PNG")); // NOI18N
         upload.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 uploadActionPerformed(evt);
@@ -109,9 +109,11 @@ public class OverallOperation extends javax.swing.JFrame implements DataOperatio
                         .addComponent(Submit, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(SubmissionLayout.createSequentialGroup()
                         .addGap(218, 218, 218)
-                        .addGroup(SubmissionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(SubmissionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(upload, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))))
+                            .addGroup(SubmissionLayout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(jLabel2)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, SubmissionLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -179,6 +181,7 @@ public class OverallOperation extends javax.swing.JFrame implements DataOperatio
         name=file.getName();
         StringTokenizer s=new StringTokenizer(name);
         name=s.nextToken(".");
+       
         
         
     }//GEN-LAST:event_uploadActionPerformed
@@ -187,9 +190,7 @@ public class OverallOperation extends javax.swing.JFrame implements DataOperatio
         System.out.println(name);
          formate=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
          dtsub=new Date();
-        System.out.println(formate.format(dtsub));
-        System.out.println(getId());
-        System.out.println(Notes.getText());
+         
         WriteLogs Logs=new WriteLogs();
         Logs.Write("Logs Date "+formate.format(dtsub).toString()+" ForFile "+name);
         Insert();

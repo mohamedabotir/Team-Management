@@ -13,3 +13,6 @@ Logs Date 2020-07-20 01:29:24 ForFile TEST YOUR COMPUTER SPEED
 Logs Date 2020-07-20 01:41:05 ForFile settings
 Logs Date 2020-07-20 02:00:33 ForFile example
 Logs Date 2020-07-20 02:32:01 ForFile almasry (v02)
+Logs Date 2020-07-23 09:37:32 ForFile Sports Interactive
+Logs Date 2020-07-23 09:48:17 ForFile Sports Interactive
+Logs Date 2020-07-23 09:51:33 ForFile Sports Interactive

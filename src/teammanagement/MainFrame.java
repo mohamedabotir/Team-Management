@@ -15,6 +15,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -131,6 +132,7 @@ void login() throws SQLException
                    OverallOperation NextFrame=new OverallOperation();NextFrame.setVisible(true);
                   dispose();}if(type==1){
                    JOptionPane.showMessageDialog(this,"Succesfull Done:Tester");
+                   tester NextFrame=new tester();NextFrame.setVisible(true);
                   dispose();
                   
                   }
@@ -343,7 +345,7 @@ void login() throws SQLException
         return TName.getText();
     }
 
-    public char[] Password() {
+    public char[] getPassword() {
         return TPassword.getPassword();
     }
   public static  int getId(){

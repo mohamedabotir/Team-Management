@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.stage.FileChooser;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import static teammanagement.MainFrame.getId;
 
 /**
@@ -174,7 +175,10 @@ public class OverallOperation extends javax.swing.JFrame implements DataOperatio
 
     private void uploadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadActionPerformed
         JFileChooser f=new JFileChooser();
-        f.showOpenDialog(null);
+        f.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        int result=f.showOpenDialog(this);
+        if(result==JFileChooser.CANCEL_OPTION)
+            JOptionPane.showMessageDialog(this,"Choose File Please");
         File file=f.getSelectedFile();
         filepath=file.getAbsolutePath();
         Directory.setText(filepath);

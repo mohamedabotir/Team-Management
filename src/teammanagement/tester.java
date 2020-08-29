@@ -6,6 +6,7 @@
 package teammanagement;
 
 import database.connection;
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,7 +21,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
+import java.util.Dictionary;
+import java.util.Hashtable;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 /**
  *
  * @author Threading
@@ -29,31 +33,32 @@ public class tester extends javax.swing.JFrame {
 
     ArrayList<String> name=new ArrayList<>();
     ArrayList<Integer> id=new ArrayList<>();
+    Dictionary  data;
    final  private   ArrayList<JButton> buttons=new ArrayList<>();
     public tester() {
+        this.data = new  Hashtable();
         JPanel p1=new JPanel();
         //initComponents();
-        javax.swing.JButton b1=new javax.swing.JButton("555");
-        get();
-       int c = 0,i=name.size()-1;
-        while( i>0)
-        {c++;
-        setLayout(new GridLayout(1,0));
-            p1.setLayout(new GridLayout(c,0));
-            
+        
+        this.get();
+       int c = 0,i=name.size()-1; 
+        while( i>=0)
+        {
+        //setLayout(new GridLayout(1,0));
+        p1.setLayout(new GridLayout(c+1,0));    
        
         buttons.add(new JButton(name.get(c)));
-        
-       
+       c++;
         i--; 
         
         }
        
        // c = 0;i=name.size()-1; 
         //buttons.ensureCapacity(i);
+       
         for(int k=0;k<buttons.size();k++)
         {
-        int ids=id.get(k)+1;
+        int ids=id.get(k);
             JButton temp=buttons.get(k);
           temp.addActionListener(new ActionListener() {
             @Override
@@ -66,6 +71,7 @@ public class tester extends javax.swing.JFrame {
         p1. add(buttons.get(k));
        
         }
+       
         add(p1);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
@@ -114,11 +120,14 @@ public class tester extends javax.swing.JFrame {
             {
                 int ids=rs.getInt("id");
             String names=rs.getString("filename");
-            
+            int primary=rs.getInt("userid");
+            data.put(primary, ids);
             name.add(names);
             id.add(ids);
             System.out.println(id.get(count));
             count++;
+            System.out.println(data.size());
+                    
             }
         } catch (SQLException ex) {
             Logger.getLogger(tester.class.getName()).log(Level.SEVERE, null, ex);
@@ -171,4 +180,51 @@ public class tester extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+class info_File extends JFrame{
+JLabel ID_Project;
+JLabel File_name;
+JLabel name=new JLabel("Name");
+JLabel ID=new JLabel("ID");
+String []status={"Approve","Not Approve"};
+JButton submit=new JButton("Submit");
+JComboBox cstatus=new JComboBox(status);    
+JPanel p1=new JPanel();
+JPanel p2=new JPanel();
+JPanel p3=new JPanel();
+        
+public void  set_ID_Project(int id){
+    ID_Project=new JLabel(String.valueOf(id));
+}
+public void  set_File_name(String name){
+    File_name=new JLabel(name);
+}
+void run(){
+name.setLabelFor(File_name);
+ID.setLabelFor(ID_Project);
+p1.setLayout(new GridLayout(2,2));
+p1.add(name);
+p1.add(File_name);p1.add(ID);
+p1.add(ID_Project);
+p2.setLayout(new GridLayout(1,0));
+cstatus.setBounds(50, 50,90,20);
+p3.setLayout(new GridLayout(1,0));
+p3.add(cstatus);
+p2.add(submit);
+setVisible(true);
+setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+add(p1,BorderLayout.NORTH);
+add(p2,BorderLayout.SOUTH);
+add(p3,BorderLayout.CENTER);
+    pack();
+    submit.addActionListener(new ActionListener() {
+        
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+        Object selected=cstatus.getSelectedItem();
+        if(ae.getSource()==submit)
+            JOptionPane.showMessageDialog(p2, selected);
+    }
+});
+}
+}
 }

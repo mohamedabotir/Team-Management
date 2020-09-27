@@ -121,6 +121,7 @@ public class tester extends javax.swing.JFrame {
             int count=0;
             while(rs.next())
             {
+                int userID=rs.getInt("UserID");
                 int ids=rs.getInt("id");
             String names=rs.getString("filename");
             String comment=rs.getString("comment");
@@ -130,6 +131,7 @@ public class tester extends javax.swing.JFrame {
             data.setFileName(names);
             data.setId(ids);
             data.setTime(time);
+            data.setUserID(userID);
             name.add(names);
             id.add(data);
             System.out.println(id.get(count));

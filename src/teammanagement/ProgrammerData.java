@@ -12,10 +12,18 @@ import java.util.Date;
  * @author Threading
  */
 public class ProgrammerData {
-    int id;
+    int id,userID;
     String FileName;
     String comment;
     Date time;
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
 
     public void setTime(Date time) {
         this.time = time;

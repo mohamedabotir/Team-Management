@@ -13,9 +13,17 @@ import java.util.Date;
  */
 public class ProgrammerData {
     int id,userID;
-    String FileName;
+    String FileName,fullname;
     String comment;
     Date time;
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
 
     public void setUserID(int userID) {
         this.userID = userID;

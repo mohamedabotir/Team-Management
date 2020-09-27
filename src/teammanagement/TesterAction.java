@@ -5,8 +5,19 @@
  */
 package teammanagement;
 
+import database.connection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -20,9 +31,10 @@ public class TesterAction extends javax.swing.JFrame implements ActionListener{
      * Creates new form TesterAction
      * @param data
      */
+    ProgrammerData FileData;
     public TesterAction(ProgrammerData data) {
         initComponents();
-        
+        this.FileData=data;
         ProgrammerID.setText(String.valueOf(data.getId()));
         ProgrammerFile.setText(data.getFileName());
         AreaComment.setText(data.getComment());
@@ -30,12 +42,79 @@ public class TesterAction extends javax.swing.JFrame implements ActionListener{
         Status.addItem("Approve");
         Status.addItem("Not Approve");
         submit.addActionListener(this);
- 
+        DownloadButton.addActionListener(this);
        
             
         pack();
         
     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }
+     void DownlaodFile(ProgrammerData data) throws IOException, ClassNotFoundException{
+     String SQL = "SELECT Filename,file FROM programmer WHERE id=?";
+
+        Connection conn = null;
+        java.sql.PreparedStatement smt = null;
+        InputStream input = null;
+        FileOutputStream output = null;
+        ResultSet rs = null;
+        connection DBConnection=new connection();
+        try {
+
+            Class.forName("com.mysql.jdbc.Driver");
+          //  System.out.println("Connecting...");
+
+          //  System.out.println("Connection successful..\nNow creating query...");
+           conn=DBConnection.getConnection();
+            smt = conn.prepareStatement(SQL);
+            smt.setInt(1, data.getId());  //in this row we have a png picture
+            rs = smt.executeQuery();
+            File directory=new File(data.getFullname());
+            output = new FileOutputStream(directory);
+
+            while (rs.next()) {
+
+                input = rs.getBinaryStream("Filename"); //get it from col name
+                int r = 0;
+
+    
+   // there I've tried with array but nothing changed..Like this :
+     byte[] buffer = new byte[2048];
+     while((r = input.read(buffer)) != -1){
+           output.write(buffer,0,r);}
+    
+
+              //  while ((r = input.read()) != -1) {
+                //    output.write(r);
+
+               // }
+            }
+JOptionPane.showMessageDialog(this, "DownloadedSucessfully:","'"+directory.getPath()+"'",JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException e) {
+            System.err.println("Connection failed!");   
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found!");
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.err.println("File writing error..!");
+            e.printStackTrace();
+        }finally {
+            if(rs != null){
+                try {
+                    input.close();
+                    output.flush();
+                    output.close();
+                    smt.close();
+                    conn.close();
+                }catch (SQLException e) {
+                    System.err.println("Connot close connecton!");
+                }
+                // TODO Auto-generated catch block
+                
+
+            }
+        }
+
     }
     
 
@@ -54,13 +133,14 @@ public class TesterAction extends javax.swing.JFrame implements ActionListener{
         FileLabel = new javax.swing.JLabel();
         ProgrammerFile = new javax.swing.JLabel();
         LComment = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        AreaComment = new javax.swing.JTextArea();
         DateLabel = new javax.swing.JLabel();
         SubmissionDate = new javax.swing.JLabel();
         Status = new javax.swing.JComboBox<>();
-        jLabel1 = new javax.swing.JLabel();
+        LStatus = new javax.swing.JLabel();
+        DownloadButton = new javax.swing.JButton();
         submit = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        AreaComment = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -79,10 +159,6 @@ public class TesterAction extends javax.swing.JFrame implements ActionListener{
         LComment.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         LComment.setText("comment");
 
-        AreaComment.setColumns(20);
-        AreaComment.setRows(5);
-        jScrollPane1.setViewportView(AreaComment);
-
         DateLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         DateLabel.setText("SubmissionDate");
 
@@ -92,8 +168,11 @@ public class TesterAction extends javax.swing.JFrame implements ActionListener{
         Status.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         Status.setMaximumRowCount(2);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel1.setText("Status");
+        LStatus.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        LStatus.setText("Status");
+
+        DownloadButton.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        DownloadButton.setText("DownloadFile");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -117,11 +196,11 @@ public class TesterAction extends javax.swing.JFrame implements ActionListener{
                                     .addComponent(ProgrammerFile)
                                     .addComponent(SubmissionDate)))
                             .addComponent(Status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(LComment, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1)))
+                            .addComponent(LStatus)
+                            .addComponent(DownloadButton, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(LComment, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -142,14 +221,14 @@ public class TesterAction extends javax.swing.JFrame implements ActionListener{
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(SubmissionDate)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1)
+                .addComponent(LStatus)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(Status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(LComment)
+                .addGap(33, 33, 33)
+                .addComponent(DownloadButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(LComment)
+                .addGap(38, 38, 38))
         );
 
         submit.setText("Submit");
@@ -158,6 +237,10 @@ public class TesterAction extends javax.swing.JFrame implements ActionListener{
                 submitActionPerformed(evt);
             }
         });
+
+        AreaComment.setColumns(20);
+        AreaComment.setRows(5);
+        jScrollPane1.setViewportView(AreaComment);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -168,16 +251,20 @@ public class TesterAction extends javax.swing.JFrame implements ActionListener{
                 .addGap(0, 13, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(submit)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(submit)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(submit)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -226,14 +313,15 @@ public class TesterAction extends javax.swing.JFrame implements ActionListener{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea AreaComment;
     private javax.swing.JLabel DateLabel;
+    private javax.swing.JButton DownloadButton;
     private javax.swing.JLabel FileLabel;
     private javax.swing.JLabel IDLabel;
     private javax.swing.JLabel LComment;
+    private javax.swing.JLabel LStatus;
     private javax.swing.JLabel ProgrammerFile;
     private javax.swing.JLabel ProgrammerID;
     private javax.swing.JComboBox<String> Status;
     private javax.swing.JLabel SubmissionDate;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton submit;
@@ -248,6 +336,14 @@ String StatusValue=(String)Status.getSelectedItem();
         else
                         JOptionPane.showMessageDialog(null, "Faild Coding...");
 
+        }
+        if(ae.getSource()==DownloadButton){
+            try {
+                DownlaodFile(FileData);
+            } catch (IOException ex) {
+JOptionPane.showMessageDialog(this, "Can't Downlaod File","'"+FileData.getFileName()+"'",JOptionPane.ERROR_MESSAGE);            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(TesterAction.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }

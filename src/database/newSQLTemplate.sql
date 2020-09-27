@@ -10,4 +10,4 @@
 
 create table user (id int(4) unsigned auto_increment primary key,name varchar(30) not null, password varchar(20) not null,type int(1) not null,index(id));
 /*Programmer Table*/
-create table Programmer(ID int(3) auto_increment not null primary key,UserID int unsigned not null,comment varchar(250) not null,SubmissionDate DATETIME,file mediumblob,Filename varchar(60) not null,foreign key (UserID) REFERENCES user(id) );
+create table Programmer(ID int(3) auto_increment not null primary key,UserID int unsigned not null,comment varchar(250) not null,SubmissionDate DATETIME,file mediumblob,Filename varchar(60) not null,fullname varchar(80) not null,foreign key (UserID) REFERENCES user(id) );

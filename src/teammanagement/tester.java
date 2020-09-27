@@ -10,6 +10,11 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -126,12 +131,14 @@ public class tester extends javax.swing.JFrame {
             String names=rs.getString("filename");
             String comment=rs.getString("comment");
             Date time=rs.getDate("SubmissionDate");
+            String fullname=rs.getString("fullname");
             data=new ProgrammerData();
             data.setComment(comment);
             data.setFileName(names);
             data.setId(ids);
             data.setTime(time);
             data.setUserID(userID);
+            data.setFullname(fullname);
             name.add(names);
             id.add(data);
             System.out.println(id.get(count));
@@ -154,6 +161,7 @@ public class tester extends javax.swing.JFrame {
         }
     
     }
+   
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

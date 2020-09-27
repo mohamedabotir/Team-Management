@@ -34,7 +34,7 @@ public class OverallOperation extends javax.swing.JFrame implements DataOperatio
      */
     String filepath;
     byte[] codefile;
-    String name;
+    String name,fullname;
     Connection con=null;
     Statement st=null;
     ResultSet rs=null;
@@ -183,6 +183,7 @@ public class OverallOperation extends javax.swing.JFrame implements DataOperatio
         filepath=file.getAbsolutePath();
         Directory.setText(filepath);
         name=file.getName();
+        fullname=name;
         StringTokenizer s=new StringTokenizer(name);
         name=s.nextToken(".");
        
@@ -251,7 +252,7 @@ public class OverallOperation extends javax.swing.JFrame implements DataOperatio
     @Override
     public void Insert() {
         try {
-            Query="insert into programmer(userid,comment,submissiondate,filename,file)values('"+getId()+"','"+Notes.getText()+"','"+formate.format(dtsub)+"','"+name+"','"+filepath+"')";
+            Query="insert into programmer(userid,comment,submissiondate,filename,file,fullname)values('"+getId()+"','"+Notes.getText()+"','"+formate.format(dtsub)+"','"+name+"','"+filepath+"','"+fullname+"')";
             co =new connection();
             con=co.getConnection();
             st=con.createStatement();

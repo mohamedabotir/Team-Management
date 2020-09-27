@@ -39,3 +39,4 @@ Logs Date 2020-08-30 12:45:50 ForFile Smooth Talker - Dougie Wood
 Logs Date 2020-08-30 12:51:00 ForFile MySQL
 Logs Date 2020-08-30 01:46:52 ForFile AlertMetaData
 Logs Date 2020-08-30 01:47:08 ForFile state_file_0_1595589824312
+Logs Date 2020-09-27 06:27:31 ForFile Bitvise SSH Client

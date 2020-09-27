@@ -15,14 +15,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import java.util.Dictionary;
-import java.util.Hashtable;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 /**
@@ -32,11 +31,10 @@ import javax.swing.JLabel;
 public class tester extends javax.swing.JFrame {
 
     ArrayList<String> name=new ArrayList<>();
-    ArrayList<Integer> id=new ArrayList<>();
-    Dictionary  data;
+    ArrayList<ProgrammerData> id=new ArrayList<>();
+    
    final  private   ArrayList<JButton> buttons=new ArrayList<>();
     public tester() {
-        this.data = new  Hashtable();
         JPanel p1=new JPanel();
         //initComponents();
         
@@ -58,13 +56,18 @@ public class tester extends javax.swing.JFrame {
        
         for(int k=0;k<buttons.size();k++)
         {
-        int ids=id.get(k);
+            int ids=id.get(k).getId();
+            String file=id.get(k).getFileName();
+            Date filedate=id.get(k).getTime();
             JButton temp=buttons.get(k);
+            ProgrammerData data=id.get(k);
           temp.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                  if(ae.getSource()== temp){
-                     JOptionPane.showMessageDialog(p1,"ID"+ids);
+                   //  JOptionPane.showMessageDialog(p1,"ID"+ids+" File Name:"+file+"\nSubmissionDate:"+filedate);
+                    TesterAction s=new TesterAction(data);
+                     s.setVisible(true);
                  }
             }
         });
@@ -110,7 +113,7 @@ public class tester extends javax.swing.JFrame {
         ResultSet  rs=null;
         PreparedStatement stmp=null;
     connection con=new connection();
-    
+    ProgrammerData data;
         try {
             co=con.getConnection();
             stmp=co.prepareStatement("select * from programmer");
@@ -120,14 +123,17 @@ public class tester extends javax.swing.JFrame {
             {
                 int ids=rs.getInt("id");
             String names=rs.getString("filename");
-            int primary=rs.getInt("userid");
-            data.put(primary, ids);
+            String comment=rs.getString("comment");
+            Date time=rs.getDate("SubmissionDate");
+            data=new ProgrammerData();
+            data.setComment(comment);
+            data.setFileName(names);
+            data.setId(ids);
+            data.setTime(time);
             name.add(names);
-            id.add(ids);
+            id.add(data);
             System.out.println(id.get(count));
-            count++;
-            System.out.println(data.size());
-                    
+            count++;                    
             }
         } catch (SQLException ex) {
             Logger.getLogger(tester.class.getName()).log(Level.SEVERE, null, ex);

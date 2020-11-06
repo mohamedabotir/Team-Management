@@ -8,9 +8,11 @@ package teammanagement;
 import database.connection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -32,6 +34,7 @@ public class TesterAction extends javax.swing.JFrame implements ActionListener{
      * @param data
      */
     ProgrammerData FileData;
+    BufferedWriter bufdata;
     public TesterAction(ProgrammerData data) {
         initComponents();
         this.FileData=data;
@@ -69,18 +72,25 @@ public class TesterAction extends javax.swing.JFrame implements ActionListener{
             smt.setInt(1, data.getId());  //in this row we have a png picture
             rs = smt.executeQuery();
             File directory=new File(data.getFullname());
+            String path=data.getFullname();
+            bufdata=new BufferedWriter(new FileWriter(path));
             output = new FileOutputStream(directory);
+            String fileContent;
 
             while (rs.next()) {
 
-                input = rs.getBinaryStream("Filename"); //get it from col name
+                //input = rs.getString("Filename"); //get it from col name
+                String name=rs.getString("Filename");
+                String content=rs.getString("file");
                 int r = 0;
-
+               
+                bufdata.write(content+"\n");
+                bufdata.close();
     
    // there I've tried with array but nothing changed..Like this :
-     byte[] buffer = new byte[2048];
+    /* byte[] buffer = new byte[2048];
      while((r = input.read(buffer)) != -1){
-           output.write(buffer,0,r);}
+           output.write(buffer,0,r);}*/
     
 
               //  while ((r = input.read()) != -1) {
@@ -101,7 +111,6 @@ JOptionPane.showMessageDialog(this, "DownloadedSucessfully:","'"+directory.getPa
         }finally {
             if(rs != null){
                 try {
-                    input.close();
                     output.flush();
                     output.close();
                     smt.close();

@@ -22,7 +22,7 @@ public class connection {
         this.password="Kampo";
         this.server="localhost";
         this.DB="team";
-        this.port=3307;
+        this.port=3306;
     }
     public Connection getConnection ()throws SQLException{
         Properties connection_info=new Properties();

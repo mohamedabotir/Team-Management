@@ -8,7 +8,11 @@ package teammanagement;
 import Annotation.DataOperations;
 import Logs.WriteLogs;
 import database.connection;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,7 +38,7 @@ public class OverallOperation extends javax.swing.JFrame implements DataOperatio
      */
     String filepath;
     byte[] codefile;
-    String name,fullname;
+    String name,fullname,Content;
     Connection con=null;
     Statement st=null;
     ResultSet rs=null;
@@ -190,7 +194,28 @@ public class OverallOperation extends javax.swing.JFrame implements DataOperatio
         
         
     }//GEN-LAST:event_uploadActionPerformed
-
+private String readFile(String Path){
+    String FileData=null;    
+    try {
+            BufferedReader data=new BufferedReader(new FileReader(Path));
+            FileData=data.readLine()+"\n";
+            
+            while(data.readLine()!=null){
+                if(data.readLine()!=null)
+                {FileData+=data.readLine()+"\n";}
+                else{
+                break;
+                }
+            
+            }
+            data.close();
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(null, "File Not Found","",JOptionPane.ERROR_MESSAGE);
+        } catch (IOException ex) {
+            Logger.getLogger(OverallOperation.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    return FileData;
+}
     private void SubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SubmitActionPerformed
         System.out.println(name);
          formate=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -251,8 +276,9 @@ public class OverallOperation extends javax.swing.JFrame implements DataOperatio
 
     @Override
     public void Insert() {
+        System.out.println(readFile(filepath));
         try {
-            Query="insert into programmer(userid,comment,submissiondate,filename,file,fullname)values('"+getId()+"','"+Notes.getText()+"','"+formate.format(dtsub)+"','"+name+"','"+filepath+"','"+fullname+"')";
+            Query="insert into programmer(userid,comment,submissiondate,filename,file,fullname)values('"+getId()+"','"+Notes.getText()+"','"+formate.format(dtsub)+"','"+name+"','"+readFile(filepath)+"','"+fullname+"')";
             co =new connection();
             con=co.getConnection();
             st=con.createStatement();

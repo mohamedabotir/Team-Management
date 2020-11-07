@@ -16,12 +16,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import static teammanagement.MainFrame.getId;
+
 
 /**
  *
@@ -35,9 +40,11 @@ public class TesterAction extends javax.swing.JFrame implements ActionListener{
      */
     ProgrammerData FileData;
     BufferedWriter bufdata;
+    int userID,fileID;
     public TesterAction(ProgrammerData data) {
         initComponents();
         this.FileData=data;
+        fileID=data.getId();
         ProgrammerID.setText(String.valueOf(data.getId()));
         ProgrammerFile.setText(data.getFileName());
         AreaComment.setText(data.getComment());
@@ -46,7 +53,7 @@ public class TesterAction extends javax.swing.JFrame implements ActionListener{
         Status.addItem("Not Approve");
         submit.addActionListener(this);
         DownloadButton.addActionListener(this);
-       
+       userID=getId();
             
         pack();
         
@@ -57,48 +64,24 @@ public class TesterAction extends javax.swing.JFrame implements ActionListener{
 
         Connection conn = null;
         java.sql.PreparedStatement smt = null;
-        InputStream input = null;
-        FileOutputStream output = null;
         ResultSet rs = null;
         connection DBConnection=new connection();
         try {
-
-            Class.forName("com.mysql.jdbc.Driver");
-          //  System.out.println("Connecting...");
-
-          //  System.out.println("Connection successful..\nNow creating query...");
            conn=DBConnection.getConnection();
             smt = conn.prepareStatement(SQL);
             smt.setInt(1, data.getId());  //in this row we have a png picture
             rs = smt.executeQuery();
-            File directory=new File(data.getFullname());
             String path=data.getFullname();
             bufdata=new BufferedWriter(new FileWriter(path));
-            output = new FileOutputStream(directory);
             String fileContent;
 
             while (rs.next()) {
-
-                //input = rs.getString("Filename"); //get it from col name
                 String name=rs.getString("Filename");
                 String content=rs.getString("file");
-                int r = 0;
-               
                 bufdata.write(content+"\n");
                 bufdata.close();
-    
-   // there I've tried with array but nothing changed..Like this :
-    /* byte[] buffer = new byte[2048];
-     while((r = input.read(buffer)) != -1){
-           output.write(buffer,0,r);}*/
-    
-
-              //  while ((r = input.read()) != -1) {
-                //    output.write(r);
-
-               // }
             }
-JOptionPane.showMessageDialog(this, "DownloadedSucessfully:","'"+directory.getPath()+"'",JOptionPane.INFORMATION_MESSAGE);
+JOptionPane.showMessageDialog(this, "DownloadedSucessfully:","'"+path+"'",JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException e) {
             System.err.println("Connection failed!");   
             e.printStackTrace();
@@ -111,22 +94,41 @@ JOptionPane.showMessageDialog(this, "DownloadedSucessfully:","'"+directory.getPa
         }finally {
             if(rs != null){
                 try {
-                    output.flush();
-                    output.close();
                     smt.close();
                     conn.close();
                 }catch (SQLException e) {
-                    System.err.println("Connot close connecton!");
+                    JOptionPane.showMessageDialog(null,"Cannot Close Connextion","",JOptionPane.ERROR_MESSAGE);
                 }
-                // TODO Auto-generated catch block
+              
                 
 
             }
         }
 
     }
-    
-
+  int  submitData(){
+  String sql="insert into tester (id_user,status,approveDate,notes,fileid)values(?,?,?,?,?)"; 
+  Connection con;
+  PreparedStatement pstm=null;
+  connection DBConnection=new connection();
+  int status=0;
+  SimpleDateFormat formate=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Date dtsub=new Date();
+        try {
+            con=DBConnection.getConnection();
+            pstm=con.prepareStatement(sql);
+            pstm.setInt(1, userID);
+            pstm.setString(2,(String)Status.getSelectedItem());
+            pstm.setString(3, (String)formate.format(dtsub));
+            pstm.setString(4, AreaComment.getText());
+            pstm.setInt(5, fileID);
+            status= pstm.executeUpdate();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(TesterAction.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return status;
+  }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -344,8 +346,13 @@ String StatusValue=(String)Status.getSelectedItem();
             JOptionPane.showMessageDialog(null, "SucessFull Coding...");
         else
                         JOptionPane.showMessageDialog(null, "Faild Coding...");
-
+if(submitData()==1)
+            JOptionPane.showMessageDialog(null, "Successful","submit",JOptionPane.INFORMATION_MESSAGE);
+else{
+JOptionPane.showMessageDialog(null,"Faild","Submission",JOptionPane.ERROR_MESSAGE);
+}
         }
+        
         if(ae.getSource()==DownloadButton){
             try {
                 DownlaodFile(FileData);

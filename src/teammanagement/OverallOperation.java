@@ -195,10 +195,10 @@ public class OverallOperation extends javax.swing.JFrame implements DataOperatio
         
     }//GEN-LAST:event_uploadActionPerformed
 private String readFile(String Path){
-    String FileData=null;    
+    String FileData="";    
     try {
             BufferedReader data=new BufferedReader(new FileReader(Path));
-            FileData=data.readLine()+"\n";
+           // FileData=data.readLine()+"\n";
             
             while(data.readLine()!=null){
                 if(data.readLine()!=null)
@@ -276,7 +276,7 @@ private String readFile(String Path){
 
     @Override
     public void Insert() {
-        System.out.println(readFile(filepath));
+        //System.out.println(readFile(filepath));
         try {
             Query="insert into programmer(userid,comment,submissiondate,filename,file,fullname)values('"+getId()+"','"+Notes.getText()+"','"+formate.format(dtsub)+"','"+name+"','"+readFile(filepath)+"','"+fullname+"')";
             co =new connection();
